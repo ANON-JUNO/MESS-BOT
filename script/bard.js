@@ -14,7 +14,7 @@ module.exports.config = {
 
 module.exports.run = async ({ api, event, args }) => {
 		const prompt = args.join(" ");
-	api.setMessageReaction("📝", event.messageID, () => { }, true);
+	api.setMessageReaction("", event.messageID, () => { }, true);
 
 		if (!prompt) {
 				return api.sendMessage("Hello there, how can I assist you today?", event.threadID, event.messageID);
@@ -23,7 +23,7 @@ module.exports.run = async ({ api, event, args }) => {
 		try {
 				const response = await axios.get(`https://gemini-d1p.onrender.com/dipto?prompt=${prompt}`);
 				const di = response.data.dipto; 
-				api.setMessageReaction("✅", event.messageID, () => { }, true);
+				api.setMessageReaction("", event.messageID, () => { }, true);
 
 				api.sendMessage(`${di}`, event.threadID, event.messageID);
 		} catch (error) {
