@@ -23,7 +23,7 @@ module.exports.run = async ({ api, event, args }) => {
 				await api.removeUserFromGroup(api.getCurrentUserID(), item.threadID);
 			}
 		});
-		await api.sendMessage('Out of all other groups successfully', event.threadID);
+		await api.sendMessage('Out of all other groups successfully...', event.threadID);
 	} catch (err) {
 		console.error(err);
 	}
