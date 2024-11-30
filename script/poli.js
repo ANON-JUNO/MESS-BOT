@@ -5,7 +5,7 @@ module.exports.config = {
   hasPrefix: false,
   credits: "Developer",
   description: "generate image from polination.",
-  usages: "poli [promt]",
+  usages: "poli [prompt]",
   cooldowns: 5,
   
 };
