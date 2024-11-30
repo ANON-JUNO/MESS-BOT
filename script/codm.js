@@ -14,7 +14,7 @@ module.exports.run = async function ({ api, event }) {
     const request = require('request');
     const fs = require("fs");
 
-    api.sendMessage(`⏱️ Sending please wait. . ..`, event.threadID, event.messageID);
+    api.sendMessage(`⏱Sending please wait...`, event.threadID, event.messageID);
 
     axios.post('https://share-apis.onrender.com/codm').then(res => {
         let ext = res.data.url.substring(res.data.url.lastIndexOf(".") + 1);
@@ -30,7 +30,7 @@ module.exports.run = async function ({ api, event }) {
             const share = res.data.all.share_count;
 
             const info = `
-                ✨ Call of duty Game Play
+                Call of duty Game Play
 
                 region: ${region}
                 username: ${username}
@@ -51,6 +51,6 @@ module.exports.run = async function ({ api, event }) {
         request(res.data.url).pipe(fs.createWriteStream(__dirname + `/cache/codm.${ext}`)).on("close", callback);
     }).catch(err => {
         api.sendMessage("error na bai maya naman", event.threadID, event.messageID);
-        api.setMessageReaction("❌", event.messageID, (err) => {}, true);
+        api.setMessageReaction("", event.messageID, (err) => {}, true);
     });     
 }
