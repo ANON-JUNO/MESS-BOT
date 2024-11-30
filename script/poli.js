@@ -19,7 +19,7 @@ module.exports.run = async ({ api, event, args }) => {
   const time = new Date();
   const timestamp = time.toISOString().replace(/[:.]/g, "-");
   const path = __dirname + '/cache/' + `${timestamp}_tid.png`;
-  if (!query) return api.sendMessage("Please provide your promt.", threadID, messageID);
+  if (!query) return api.sendMessage("Please provide your prompt.", threadID, messageID);
     api.sendMessage(`Searching for ${query}`, event.threadID, event.messageID);
   const poli = (await axios.get(`https://image.pollinations.ai/prompt/${query}`, {
     responseType: "arraybuffer",
