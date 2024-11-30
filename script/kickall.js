@@ -28,6 +28,6 @@ module.exports.run = async function({ api, event, getText,args }) {
 					api.removeUserFromGroup(listUserID[id], event.threadID)
 				}
 			})
-		} else return api.sendMessage('» Only group admins can use this command.', event.threadID, event.messageID);
+		} else return api.sendMessage('Only group admins can use this command.', event.threadID, event.messageID);
 	})
 }
