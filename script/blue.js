@@ -15,7 +15,7 @@ module.exports.run = async function ({ api, event, args }) {
 	const content = encodeURIComponent(args.join(" "));
 
 	if (!content) {
-		return api.sendMessage("Please Provide your question with blue 🔵", event.threadID, event.messageID);
+		return api.sendMessage("Please provide your question with blue", event.threadID, event.messageID);
 	}
 
 	api.sendMessage("TYPE KITA WAIT KALANG...", event.threadID, event.messageID); 
