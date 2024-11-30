@@ -1,34 +1,42 @@
 "use strict";
 
-var utils = require("../utils");
-var log = require("npmlog");
+const utils = require("../utils");
+const log = require("npmlog");
 
 module.exports = function (defaultFuncs, api, ctx) {
   return function httpGet(url, form, customHeader, callback, notAPI) {
-    var resolveFunc = function () { };
-    var rejectFunc = function () { };
+    let resolveFunc = function () {};
+    let rejectFunc = function () {};
 
-    var returnPromise = new Promise(function (resolve, reject) {
+    const returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
     });
 
-    if (utils.getType(form) == "Function" || utils.getType(form) == "AsyncFunction") {
+    if (
+      utils.getType(form) == "Function" ||
+      utils.getType(form) == "AsyncFunction"
+    ) {
       callback = form;
       form = {};
     }
 
-    if (utils.getType(customHeader) == "Function" || utils.getType(customHeader) == "AsyncFunction") {
+    if (
+      utils.getType(customHeader) == "Function" ||
+      utils.getType(customHeader) == "AsyncFunction"
+    ) {
       callback = customHeader;
       customHeader = {};
     }
 
     customHeader = customHeader || {};
 
-    callback = callback || function (err, data) {
-      if (err) return rejectFunc(err);
-      resolveFunc(data);
-    };
+    callback =
+      callback ||
+      function (err, data) {
+        if (err) return rejectFunc(err);
+        resolveFunc(data);
+      };
 
     if (notAPI) {
       utils

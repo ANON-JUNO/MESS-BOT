@@ -1,15 +1,15 @@
 "use strict";
 
-var utils = require("../utils");
-var log = require("npmlog");
+const utils = require("../utils");
+const log = require("npmlog");
 
 module.exports = function (defaultFuncs, api, ctx) {
   function makeTypingIndicator(typ, threadID, callback, isGroup) {
-    var form = {
+    const form = {
       typ: +typ,
       to: "",
       source: "mercury-chat",
-      thread: threadID
+      thread: threadID,
     };
 
     // Check if thread is a single person chat or a group chat
@@ -47,7 +47,11 @@ module.exports = function (defaultFuncs, api, ctx) {
         }
 
         defaultFuncs
-          .post("https://www.facebook.com/ajax/messaging/typ.php", ctx.jar, form)
+          .post(
+            "https://www.facebook.com/ajax/messaging/typ.php",
+            ctx.jar,
+            form,
+          )
           .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
           .then(function (resData) {
             if (resData.error) {
@@ -58,7 +62,10 @@ module.exports = function (defaultFuncs, api, ctx) {
           })
           .catch(function (err) {
             log.error("sendTypingIndicator", err);
-            if (utils.getType(err) == "Object" && err.error === "Not logged in.") {
+            if (
+              utils.getType(err) == "Object" &&
+              err.error === "Not logged in."
+            ) {
               ctx.loggedIn = false;
             }
             return callback(err);
@@ -75,10 +82,10 @@ module.exports = function (defaultFuncs, api, ctx) {
       if (callback) {
         log.warn(
           "sendTypingIndicator",
-          "callback is not a function - ignoring."
+          "callback is not a function - ignoring.",
         );
       }
-      callback = () => { };
+      callback = () => {};
     }
 
     makeTypingIndicator(true, threadID, callback, isGroup);
@@ -91,10 +98,10 @@ module.exports = function (defaultFuncs, api, ctx) {
         if (cb) {
           log.warn(
             "sendTypingIndicator",
-            "callback is not a function - ignoring."
+            "callback is not a function - ignoring.",
           );
         }
-        cb = () => { };
+        cb = () => {};
       }
 
       makeTypingIndicator(false, threadID, cb, isGroup);

@@ -1,13 +1,18 @@
 "use strict";
 
-var utils = require("../utils");
-var log = require("npmlog");
+const utils = require("../utils");
+const log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
-  return function setMessageReaction(reaction, messageID, callback, forceCustomReaction) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
-    var returnPromise = new Promise(function (resolve, reject) {
+module.exports = function (defaultFuncs, api, ctx) {
+  return function setMessageReaction(
+    reaction,
+    messageID,
+    callback,
+    forceCustomReaction,
+  ) {
+    let resolveFunc = function () {};
+    let rejectFunc = function () {};
+    const returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
     });
@@ -69,25 +74,25 @@ module.exports = function(defaultFuncs, api, ctx) {
         break;
       default:
         if (forceCustomReaction) {
-          break; 
+          break;
         }
         return callback({ error: "Reaction is not a valid emoji." });
     }
 
-    var variables = {
+    const variables = {
       data: {
         client_mutation_id: ctx.clientMutationId++,
-        actor_id: ctx.userID,
+        actor_id: ctx.i_userID || ctx.userID,
         action: reaction == "" ? "REMOVE_REACTION" : "ADD_REACTION",
         message_id: messageID,
-        reaction: reaction
-      }
+        reaction: reaction,
+      },
     };
 
-    var qs = {
+    const qs = {
       doc_id: "1491398900900362",
       variables: JSON.stringify(variables),
-      dpr: 1
+      dpr: 1,
     };
 
     defaultFuncs
@@ -95,10 +100,10 @@ module.exports = function(defaultFuncs, api, ctx) {
         "https://www.facebook.com/webgraphql/mutation/",
         ctx.jar,
         {},
-        qs
+        qs,
       )
       .then(utils.parseAndCheckLogin(ctx.jar, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (!resData) {
           throw { error: "setReaction returned empty object." };
         }
@@ -107,7 +112,7 @@ module.exports = function(defaultFuncs, api, ctx) {
         }
         callback(null);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("setReaction", err);
         return callback(err);
       });
