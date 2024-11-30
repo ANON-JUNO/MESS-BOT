@@ -32,6 +32,6 @@ module.exports.run = async function ({ api, event, args }) {
         return api.sendMessage(response.gemini, event.threadID);
     } catch (error) {
         console.error(error);
-        return api.sendMessage('❌ | An error occurred. You can try typing your query again or resending it. There might be an issue with the server that\'s causing the problem, and it might resolve on retrying.', event.threadID);
+        return api.sendMessage('An error occurred. You can try typing your query again or resending it. There might be an issue with the server that\'s causing the problem, and it might resolve on retrying.', event.threadID);
     }
 };
