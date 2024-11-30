@@ -21,7 +21,7 @@ module.exports.run = async function ({ api, event, args }) {
 		const apiUrl = `https://haze-ai-models-8d44a842ac90.herokuapp.com/pygmalion?content=${content}`;
 
 		try {
-				api.sendMessage("🔍 | Pygmalion is converting your text. Please wait...", event.threadID, event.messageID);
+				api.sendMessage("Pygmalion is converting your text. Please wait...", event.threadID, event.messageID);
 
 				const response = await axios.get(apiUrl);
 				const content = response.data.choices[0].message.content;
@@ -33,6 +33,6 @@ module.exports.run = async function ({ api, event, args }) {
 				}
 		} catch (error) {
 				console.error(error);
-				api.sendMessage("🔨 | An error occurred while processing your request from API...", event.threadID);
+				api.sendMessage("An error occurred while processing your request from API...", event.threadID);
 		}
 };
