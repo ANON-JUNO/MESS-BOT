@@ -14,7 +14,7 @@ module.exports.config = {
 
 module.exports.run = async function ({ api, event }) {
     try {
-        const sending = await api.sendMessage("⏱️ | Sending Shoti Video Please Wait....", event.threadID, event.messageID);
+        const sending = await api.sendMessage("Sending Shoti Video Please Wait....", event.threadID, event.messageID);
         
         const response = await axios.get('https://betadash-shoti-yazky.vercel.app/shotizxx?apikey=shipazu');
         const data = response.data;
