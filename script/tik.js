@@ -22,7 +22,7 @@ module.exports.run = async function({ api, event, args }) {
 			return;
 		}
 
-		api.sendMessage("⏱️ | Searching, please wait...", event.threadID);
+		api.sendMessage("Searching, please wait...", event.threadID);
 
 		const response = await axios.get(`https://cc-project-apis-jonell-magallanes.onrender.com/api/tiktok/searchvideo?keywords=${encodeURIComponent(searchQuery)}`);
 		const videos = response.data.data.videos;
@@ -35,7 +35,7 @@ module.exports.run = async function({ api, event, args }) {
 		const videoData = videos[0];
 		const videoUrl = videoData.play;
 
-		const message = `𝐓𝐢𝐤𝐭𝐨𝐤 𝐫𝐞𝐬𝐮𝐥𝐭:\n\n𝐏𝐨𝐬𝐭 𝐛𝐲: ${videoData.author.nickname}\n𝐔𝐬𝐞𝐫𝐧𝐚𝐦𝐞: ${videoData.author.unique_id}\n\n𝐓𝐢𝐭𝐥𝐞: ${videoData.title}`;
+		const message = `Tiktok result:\n\n𝐏𝐨𝐬𝐭 𝐛𝐲: ${videoData.author.nickname}\nUsername: ${videoData.author.unique_id}\n\nTitle: ${videoData.title}`;
 
 		const filePath = path.join(__dirname, `/cache/tiktok_video.mp4`);
 		const writer = fs.createWriteStream(filePath);
