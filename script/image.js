@@ -29,7 +29,7 @@ module.exports.run = async function ({ api, event, args }) {
 			imgPaths.push(imgPath);}
 		await api.unsendMessage(w.messageID);
 		await api.sendMessage({
-			body: `✅ | Here's your images`,
+			body: `Here's your images`,
 			attachment: imgPaths.map(imgPath => fs.createReadStream(imgPath))
 		}, event.threadID, event.messageID);
  imgPaths.forEach(imgPath => fs.unlink(imgPath));
