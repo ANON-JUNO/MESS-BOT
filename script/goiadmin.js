@@ -18,13 +18,10 @@ module.exports.handleEvent = function({ api, event, admin }) {
 					"Babe nalang iatawag mo sakanya",
 					"Stop mentioning my creator, he's busy 😗",
 					"My Creator is currently offline 😢",
-					"𝖠𝗇𝗈𝗍𝗁𝖾𝗋 𝗍𝖺𝗀 𝗂𝗇 𝗆𝗒 𝖺𝖽𝗆𝗂𝗇, 𝗂 𝗐𝗂𝗅𝗅 𝗉𝗎𝗇𝖼𝗁 𝗒𝗈𝗎 🙂",
 					"busy pa ata yun kaya mag-antay ka",
-					"Sorry, naka bebetime pa don't disturb him 🙄",
-					"Do you like my creator thats why your tagging him? Why dont you add him https://www.facebook.com/Churchill.Dev4100😏",
-					" Another tag in my Creator, i will kick your fucking ass"
+					"Do you like my creator thats why your tagging him? Why dont you add him https://www.facebook.com/profile.php?id=100091133423695😏"
 				];
-				api.setMessageReaction("😍", event.messageID, (err) => {}, true);
+				api.setMessageReaction("", event.messageID, (err) => {}, true);
 				return api.sendMessage({body: msg[Math.floor(Math.random()*msg.length)]}, event.threadID, event.messageID);
 			}
 		}
