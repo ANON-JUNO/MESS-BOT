@@ -1,13 +1,13 @@
 const axios = require("axios");
 
 module.exports.config = {
-    name: "gemma",
+    name: "wizard",
     version: "1.0.0",
     hasPermission: 0,
     credits: "Juno",
-    description: "Chat with Gemma using a conversational format.",
+    description: "Chat with Wizard using a conversational format.",
     usePrefix: false,
-    commandCategory: "Gemma",
+    commandCategory: "Wizard",
     cooldowns: 5,
 };
 
@@ -15,15 +15,15 @@ module.exports.run = async function ({ api, event, args }) {
     try {
         const { messageID, threadID, body } = event;
 
-        if (!body || !body.toLowerCase().startsWith("gemma")) {
+        if (!body || !body.toLowerCase().startsWith("wizard")) {
             return;
         }
 
-        const prompt = body.slice(5).trim();
+        const prompt = body.slice(6).trim();
 
         if (!prompt) {
             return api.sendMessage(
-                `Please provide a prompt to get a response from Gemma.`,
+                `Please provide a prompt to get a response from Wizard.`,
                 threadID,
                 messageID
             );
@@ -31,7 +31,7 @@ module.exports.run = async function ({ api, event, args }) {
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        const apiUrl = `https://joshweb.click/api/gemma-7b?q=${encodeURIComponent(prompt)}`;
+        const apiUrl = `https://joshweb.click/api/wizardlm?q=${encodeURIComponent(prompt)}`;
 
         let attempts = 0;
         let response;
@@ -46,7 +46,7 @@ module.exports.run = async function ({ api, event, args }) {
                 if (attempts >= 3) {
                     console.error(error);
                     return api.sendMessage(
-                        `An error occurred while communicating with the Gemma API. Please try again later.`,
+                        `An error occurred while communicating with the Wizard API. Please try again later.`,
                         threadID,
                         messageID
                     );
@@ -59,7 +59,7 @@ module.exports.run = async function ({ api, event, args }) {
             const generatedText = response.data.result;
 
             api.sendMessage(
-                `Answer Gemma:\n${generatedText}.\n\nType 'clear' to delete the conversation history.`,
+                `Answer Wizard:\n${generatedText}.\n\nType 'clear' to delete the conversation history.`,
                 threadID,
                 messageID
             );

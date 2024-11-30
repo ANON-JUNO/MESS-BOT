@@ -1,50 +1,50 @@
+const axios = require('axios');
+const path = require('path');
+
 module.exports.config = {
-	name: "shoti",
-	version: "1.0.0",
-	role: 0,
-	credits: "libyzxy0",
-	description: "Generate a random tiktok video.",
-	usages: "[]",
-	cooldown: 0,
-	hasPrefix: false,
+    name: "shoti",
+    version: "1.0.0",
+    hasPermission: 0,
+    description: "random video from Shoti API By Lib API",
+    usePrefix: false,
+    credits: "Jonell Magallanes",
+    cooldowns: 15,
+    commandCategory: "Media",
 };
 
-module.exports. run = async ({ api, event, args }) => {
+module.exports.run = async function ({ api, event }) {
+    try {
+        const sending = await api.sendMessage("⏱️ | Sending Shoti Video Please Wait....", event.threadID, event.messageID);
+        
+        const response = await axios.get('https://betadash-shoti-yazky.vercel.app/shotizxx?apikey=shipazu');
+        const data = response.data;
 
-	api.setMessageReaction("⏳", event.messageID, (err) => {
-		 }, true);
-api.sendTypingIndicator(event.threadID, true);
+        if (data.code === 200 && data.message === "success") {
+            const videoInfo = data.data;
+            const { url, title, user, duration } = videoInfo;
+            const { username, nickname } = user;
 
-	const { messageID, threadID } = event;
-	const fs = require("fs");
-	const axios = require("axios");
-	const request = require("request");
-	const prompt = args.join(" ");
+            const videoStream = await axios({
+                url: url,
+                method: 'GET',
+                responseType: 'stream'
+            });
 
-	if (!prompt[0]) { api.sendMessage("Downloading...", threadID, messageID);
-		}
+            api.unsendMessage(sending.messageID);
 
- try {
-	const response = await axios.post(`https://shoti-srv1.onrender.com/api/v1/get`, { apikey: `$shoti-1hg4gifgnlfdmeslom8` });
+            const message = `Successfully Sent Shoti!\nTitle: ${title}\nDuration: ${duration}\nUser: ${nickname} (@${username})`;
 
-	let path = __dirname + `/cache/shoti.mp4`;
-	const file = fs.createWriteStream(path);
-	const rqs = request(encodeURI(response.data.data.url));
-	rqs.pipe(file);
-	file.on(`finish`, () => {
-		 setTimeout(function() {
-			 api.setMessageReaction("✅", event.messageID, (err) => {
-					}, true);
-			return api.sendMessage({
-			body: `𝖴𝗌𝖾𝗋𝗇𝖺𝗆𝖾 : @${response.data.data.user.username}\n𝖭𝗂𝖼𝗄𝗇𝖺𝗆𝖾 : ${response.data.data.user.nickname}`, 
-			attachment: fs.createReadStream(path)
-		}, threadID);
-			}, 5000);
-				});
-	file.on(`error`, (err) => {
-			api.sendMessage(`Error: ${err}`, threadID, messageID);
-	});
-	 } catch (err) {
-		api.sendMessage(`Error: ${err}`, threadID, messageID);
-	};
+            api.sendMessage({
+                body: message,
+                attachment: videoStream.data  
+            }, event.threadID, event.messageID);
+
+        } else {
+            api.sendMessage(data.message, event.threadID, event.messageID);
+        }
+
+    } catch (error) {
+        console.error('Error fetching video:', error);
+        api.sendMessage(error.message, event.threadID, event.messageID);
+    }
 };

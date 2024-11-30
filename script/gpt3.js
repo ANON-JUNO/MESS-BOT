@@ -1,29 +1,29 @@
 const axios = require("axios");
 
 module.exports.config = {
-    name: "gemma",
+    name: "gpt3",
     version: "1.0.0",
     hasPermission: 0,
     credits: "Juno",
-    description: "Chat with Gemma using a conversational format.",
+    description: "GPT architecture",
     usePrefix: false,
-    commandCategory: "Gemma",
+    commandCategory: "GPT3",
     cooldowns: 5,
 };
 
 module.exports.run = async function ({ api, event, args }) {
     try {
-        const { messageID, threadID, body } = event;
+        const { messageID, messageReply, threadID, senderID } = event;
+        let prompt = args.join(" ");
 
-        if (!body || !body.toLowerCase().startsWith("gemma")) {
-            return;
+        if (messageReply && messageReply.body) {
+            const repliedMessage = messageReply.body;
+            prompt = `${repliedMessage} ${prompt}`;
         }
 
-        const prompt = body.slice(5).trim();
-
-        if (!prompt) {
+        if (!prompt.trim()) {
             return api.sendMessage(
-                `Please provide a prompt to get a response from Gemma.`,
+                "Please provide a prompt to get a response from GPT 3.",
                 threadID,
                 messageID
             );
@@ -31,22 +31,22 @@ module.exports.run = async function ({ api, event, args }) {
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        const apiUrl = `https://joshweb.click/api/gemma-7b?q=${encodeURIComponent(prompt)}`;
+        const apiUrl = `https://haji-mix.onrender.com/gpt4om?prompt=${encodeURIComponent(prompt)}`;
 
         let attempts = 0;
         let response;
+
         while (attempts < 3) {
             try {
                 response = await axios.get(apiUrl);
-                if (response.data && response.data.result) {
+                if (response.data && response.data.message) {
                     break;
                 }
             } catch (error) {
                 attempts++;
                 if (attempts >= 3) {
-                    console.error(error);
                     return api.sendMessage(
-                        `An error occurred while communicating with the Gemma API. Please try again later.`,
+                        "An error occurred while communicating with the API. Please try again later.",
                         threadID,
                         messageID
                     );
@@ -55,26 +55,25 @@ module.exports.run = async function ({ api, event, args }) {
             }
         }
 
-        if (response && response.data && response.data.result) {
-            const generatedText = response.data.result;
+        if (response && response.data && response.data.message) {
+            const generatedText = response.data.message;
 
             api.sendMessage(
-                `Answer Gemma:\n${generatedText}.\n\nType 'clear' to delete the conversation history.`,
+                `Answer GPT 3:\n${generatedText}\n\nType 'clear' to delete the conversation history.`,
                 threadID,
                 messageID
             );
         } else {
             api.sendMessage(
-                `The response from the server is empty. Please try again later.`,
+                "The response from the server is empty or invalid. Please try again later.",
                 threadID,
                 messageID
             );
         }
     } catch (error) {
-        console.error(error);
         api.sendMessage(
-            `An error occurred while processing your request. Please try again later.`,
-            threadID,
+            "An error occurred while processing your request. Please try again later.",
+            event.threadID,
             messageID
         );
     }
