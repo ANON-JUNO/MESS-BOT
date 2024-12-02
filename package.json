@@ -1,7 +1,7 @@
 {
-  "name": "fb-chat-api",
-  "version": "10.4.19",
-  "description": "A Facebook chat API that doesn't rely on XMPP",
+  "name": "hut-chat-api",
+  "version": "1.0.3",
+  "description": "A Facebook chat API that doesn't rely on XMPP and This new Logined and get the seqID ( CC PROJECTS AND CHATBOT COMMUNITY )",
   "scripts": {
     "test": "mocha",
     "lint": "./node_modules/.bin/eslint **.js",
@@ -9,17 +9,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fb-chat-api/fb-chat-api.git"
+    "url": "https://github.com/jonellcc/Hut-chat-api.git"
   },
   "keywords": [
     "facebook",
     "chat",
     "api",
     "fca",
-    "fb-chat-api"
+    "fb-chat-api",
+    "Chatbot Community",
+    "autobot",
+    "Appstate Getter"
   ],
   "bugs": {
-    "url": "https://github.com/fb-chat-api/fb-chat-api/issues"
+    "url": "https://github.com/jonellcc/Hut-chat-api/issues"
   },
   "author": "Avery, David, Maude, Benjamin, UIRI, NTKhang (rebuild)",
   "license": "MIT",
